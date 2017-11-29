@@ -33,9 +33,14 @@ public class MainActivity extends AppCompatActivity {
         requestBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((ConvoAdapter)(mRecyclerView.getAdapter())).updateAdapter(request.getText().toString());
 
-                new ConversationRequestCall().execute(request.getText().toString());
+                String input = request.getText().toString().replace("\n", " ");
+
+//                ((ConvoAdapter)(mRecyclerView.getAdapter())).updateAdapter(request.getText().toString());
+                ((ConvoAdapter)(mRecyclerView.getAdapter())).updateAdapter(input);
+
+                new ConversationRequestCall().execute(input);
+//                new ConversationRequestCall().execute(request.getText().toString());
 
             }
         });
@@ -54,10 +59,20 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            request = new ConnectionRequest("https://gateway.watsonplatform.net/conversation/api/v1/workspaces/bb5a8452-2616-4794-8f8f-ebbcb868a085/message?version=2017-05-26");
-            request.addRequestHeader("Content-Type", "application/json");
+//            request = new ConnectionRequest("https://gateway.watsonplatform.net/conversation/api/v1/workspaces/bb5a8452-2616-4794-8f8f-ebbcb868a085/message?version=2017-05-26");
+//            request = new ConnectionRequest("https://gateway.watsonplatform.net/conversation/api/v1/workspaces/08616136-d7c6-4e79-aae2-acf3df17ef14/chat?version=2017-05-26");
+
+//            https://gateway.watsonplatform.net/conversation/api/v1/workspaces/08616136-d7c6-4e79-aae2-acf3df17ef14/message/
+
+
+            request = new ConnectionRequest("https://9a057f2f-c27b-47da-8979-861cd97eaff1:zv0WWXCWN7G0@gateway.watsonplatform.net/conversation/api/v1/workspaces/08616136-d7c6-4e79-aae2-acf3df17ef14/message?version=2017-05-26");
+//
+//            request.getConnection().
+//
+// request = new ConnectionRequest("http://localhost:3000/convo");
+//            request = new ConnectionRequest("https://gateway.watsonplatform.net/conversation/api/v1/workspaces/08616136-d7c6-4e79-aae2-acf3df17ef14/message?version=2017-05-26");
 //            request.addRequestHeader("Content-Type", "application/json");
-            request.setBasicAuth("3c6cfc06-1558-4031-8ed6-ac13295edb39","rkulETlEJQk5");
+//            request.setBasicAuth("9a057f2f-c27b-47da-8979-861cd97eaff1","zv0WWXCWN7G0");
 //            request = new ConnectionRequest("https://3c6cfc06-1558-4031-8ed6-ac13295edb39:rkulETlEJQk5@gateway.watsonplatform.net/conversation/api/v1/workspaces/bb5a8452-2616-4794-8f8f-ebbcb868a085/message?version=2017-05-26");
 
 
@@ -66,9 +81,35 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected WatsonResponse doInBackground(String... params) {
-            request.addBasicBody("{ \"input\":{ \"text\":\"" + params[0] + "\" }, \"alternate_intents\":true }");
-            request.setBasicAuth("3c6cfc06-1558-4031-8ed6-ac13295edb39","rkulETlEJQk5");
+            request.addBasicBody("{ \"input\":{ \"text\":\"" + params[0] + "\" } }");
+//            request.addBasicBody("{\n" +
+//                    "  \"input\": {\n" +
+//                    "    \"text\": \"hi\"\n" +
+//                    "  },\n" +
+//                    "  \"context\": {\n" +
+//                    "    \"conversation_id\": \"bd3756f9-9846-47ce-8d54-7d163a2f4e16\",\n" +
+//                    "    \"system\": {\n" +
+//                    "      \"dialog_stack\": [\n" +
+//                    "        {\n" +
+//                    "          \"dialog_node\": \"root\"\n" +
+//                    "        }\n" +
+//                    "      ],\n" +
+//                    "      \"dialog_turn_counter\": 1,\n" +
+//                    "      \"dialog_request_counter\": 1,\n" +
+//                    "      \"_node_output_map\": {\n" +
+//                    "        \"Welcome\": [\n" +
+//                    "          0\n" +
+//                    "        ]\n" +
+//                    "      },\n" +
+//                    "      \"branch_exited\": true,\n" +
+//                    "      \"branch_exited_reason\": \"completed\"\n" +
+//                    "    }\n" +
+//                    "  }\n" +
+//                    "}");
+//            request.setBasicAuth("3c6cfc06-1558-4031-8ed6-ac13295edb39","rkulETlEJQk5");
+            request.setBasicAuth("9a057f2f-c27b-47da-8979-861cd97eaff1","zv0WWXCWN7G0");
 
+            request.addRequestHeader("Content-Type","application/json");
 
             request.connect();
 

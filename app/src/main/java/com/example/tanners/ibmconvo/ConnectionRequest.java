@@ -113,17 +113,17 @@ public class ConnectionRequest {
      * add passed in headers to http packet
      * @param entries
      */
-    public void addRequestHeader(HashMap<String, String> entries)
-    {
-        if(entries != null) {
-
-            for (Map.Entry<String, String> entry : entries.entrySet()) {
-                String key = (entry.getKey()).trim();
-                String value = (entry.getValue()).trim();
-                this.mEntries.put(key, value);
-            }
-        }
-    }
+//    public void addRequestHeader(HashMap<String, String> entries)
+//    {
+//        if(entries != null) {
+//
+//            for (Map.Entry<String, String> entry : entries.entrySet()) {
+//                String key = (entry.getKey()).trim();
+//                String value = (entry.getValue()).trim();
+//                this.mEntries.put(key, value);
+//            }
+//        }
+//    }
 
     /**
      * add passed in header to http packet
@@ -133,7 +133,8 @@ public class ConnectionRequest {
     public void addRequestHeader(String key, String value)
     {
         if(mEntries != null) {
-            this.mEntries.put(key.trim(), value.trim());
+            this.mEntries.put(key, value);
+            Log.i("DEBUG1", "DEBUG1");
         }
         else
         {
@@ -189,7 +190,7 @@ public class ConnectionRequest {
 
                 writer.flush();
                 // close stream
-//                writer.close();
+                writer.close();
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -266,7 +267,7 @@ public class ConnectionRequest {
     {
         String encoded = null;  //Java 8
 //            encoded = Base64.getEncoder().encodeToString((username+":"+password).getBytes(StandardCharsets.UTF_8));
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 //            encoded =  java.util.Base64.getEncoder().encodeToString((username+":"+password).getBytes(StandardCharsets.UTF_8));
 
 //            Log.i("BASE64", encoded);
@@ -291,11 +292,12 @@ public class ConnectionRequest {
 
 
 //            encoded =  Base64.encodeToString(username+":"+password).getBytes(StandardCharsets.UTF_8);
-        }
+//        }
 
 //        Log.i("AUTH", encoded);
 
-        addRequestHeader("Authorization", "Basic "+encoded);
+//        addRequestHeader("Authorization", "Basic "+encoded);
+        addRequestHeader("Authorization", "Basic OWEwNTdmMmYtYzI3Yi00N2RhLTg5NzktODYxY2Q5N2VhZmYxOnp2MFdXWENXTjdHMA==");
     }
 
 //    public String getResponse() throws IOException {
@@ -313,7 +315,19 @@ public class ConnectionRequest {
 
     public WatsonResponse getResponse() throws IOException {
 
+        if(connection.getErrorStream() != null) {
+            String err = IOUtils.toString(connection.getErrorStream());
+
+            Log.i("OUTPUT", err);
+            Log.i("OUTPUT", mBody);
+
+        }
+
+
         String response = IOUtils.toString(connection.getInputStream());
+
+        Log.i("OUTPUT", response);
+
         ObjectMapper objectMapper = new ObjectMapper();
         // map objects from json
         WatsonResponse watsonResponse = (objectMapper.readValue(response, WatsonResponse.class));
