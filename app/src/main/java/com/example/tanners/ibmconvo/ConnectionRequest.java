@@ -263,55 +263,21 @@ public class ConnectionRequest {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void setBasicAuth(String username, String password)
     {
-        String encoded = null;  //Java 8
-//            encoded = Base64.getEncoder().encodeToString((username+":"+password).getBytes(StandardCharsets.UTF_8));
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-//            encoded =  java.util.Base64.getEncoder().encodeToString((username+":"+password).getBytes(StandardCharsets.UTF_8));
-
-//            Log.i("BASE64", encoded);
-
+        String encoded = null;
 
             byte[] bytes = (username+":"+password).getBytes(StandardCharsets.UTF_8);
             encoded =  Base64.encodeToString(bytes, Base64.DEFAULT);
 
             Log.i("BASE64", encoded);
-//            encoded =  Base64.encodeToString(bytes, Base64.NO_PADDING);
-
-
-//            Log.i("BASE64", encoded);
-//
-//            encoded =  Base64.encodeToString(bytes, Base64.NO_WRAP);
-//
-//            Log.i("BASE64", encoded);
-//            encoded =  Base64.encodeToString(bytes, Base64.NO_CLOSE);
-//
-//            Log.i("BASE64", encoded);
-//
-
-
-//            encoded =  Base64.encodeToString(username+":"+password).getBytes(StandardCharsets.UTF_8);
-//        }
-
-//        Log.i("AUTH", encoded);
 
 //        addRequestHeader("Authorization", "Basic "+encoded);
         addRequestHeader("Authorization", "Basic OWEwNTdmMmYtYzI3Yi00N2RhLTg5NzktODYxY2Q5N2VhZmYxOnp2MFdXWENXTjdHMA==");
     }
 
-//    public String getResponse() throws IOException {
-//        BufferedReader br = new BufferedReader(new InputStreamReader((connection.getInputStream())));
-//        StringBuilder sb = new StringBuilder();
-//        String output;
-//
-//        while ((output = br.readLine()) != null) {
-//            sb.append(output);
-//            return sb.toString();
-//        }
-//
-//        return sb.toString();
-//    }
+
 
     public WatsonResponse getResponse() throws IOException {
 
@@ -332,7 +298,7 @@ public class ConnectionRequest {
         // map objects from json
         WatsonResponse watsonResponse = (objectMapper.readValue(response, WatsonResponse.class));
         // close connection
-        closeConnection();
+//        closeConnection();
         return watsonResponse;
 
     }
@@ -346,6 +312,7 @@ public class ConnectionRequest {
         if(connection != null)
         {
             connection.disconnect();
+
         }
     }
 

@@ -1,6 +1,8 @@
 package com.example.tanners.ibmconvo;
 
 import android.os.AsyncTask;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,8 +21,9 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    RecyclerView mRecyclerView;
-    ConvoAdapter convoAdapter;
+    private RecyclerView mRecyclerView;
+    private ConvoAdapter convoAdapter;
+    private String userInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,15 +36,9 @@ public class MainActivity extends AppCompatActivity {
         requestBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                String input = request.getText().toString().replace("\n", " ");
-
-//                ((ConvoAdapter)(mRecyclerView.getAdapter())).updateAdapter(request.getText().toString());
-                ((ConvoAdapter)(mRecyclerView.getAdapter())).updateAdapter(input);
-
-                new ConversationRequestCall().execute(input);
-//                new ConversationRequestCall().execute(request.getText().toString());
-
+                userInput = request.getText().toString().replace("\n", " ");
+//                ((ConvoAdapter)(mRecyclerView.getAdapter())).updateAdapter(input);
+                new ConversationRequestCall().execute(userInput);
             }
         });
 
@@ -49,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         convoAdapter = new ConvoAdapter(this);
-
         mRecyclerView.setAdapter(convoAdapter);
     }
 
@@ -59,79 +55,41 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-//            request = new ConnectionRequest("https://gateway.watsonplatform.net/conversation/api/v1/workspaces/bb5a8452-2616-4794-8f8f-ebbcb868a085/message?version=2017-05-26");
-//            request = new ConnectionRequest("https://gateway.watsonplatform.net/conversation/api/v1/workspaces/08616136-d7c6-4e79-aae2-acf3df17ef14/chat?version=2017-05-26");
-
-//            https://gateway.watsonplatform.net/conversation/api/v1/workspaces/08616136-d7c6-4e79-aae2-acf3df17ef14/message/
-
-
             request = new ConnectionRequest("https://9a057f2f-c27b-47da-8979-861cd97eaff1:zv0WWXCWN7G0@gateway.watsonplatform.net/conversation/api/v1/workspaces/08616136-d7c6-4e79-aae2-acf3df17ef14/message?version=2017-05-26");
-//
-//            request.getConnection().
-//
-// request = new ConnectionRequest("http://localhost:3000/convo");
-//            request = new ConnectionRequest("https://gateway.watsonplatform.net/conversation/api/v1/workspaces/08616136-d7c6-4e79-aae2-acf3df17ef14/message?version=2017-05-26");
-//            request.addRequestHeader("Content-Type", "application/json");
-//            request.setBasicAuth("9a057f2f-c27b-47da-8979-861cd97eaff1","zv0WWXCWN7G0");
-//            request = new ConnectionRequest("https://3c6cfc06-1558-4031-8ed6-ac13295edb39:rkulETlEJQk5@gateway.watsonplatform.net/conversation/api/v1/workspaces/bb5a8452-2616-4794-8f8f-ebbcb868a085/message?version=2017-05-26");
-
-
-
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
         @Override
         protected WatsonResponse doInBackground(String... params) {
-            request.addBasicBody("{ \"input\":{ \"text\":\"" + params[0] + "\" } }");
-//            request.addBasicBody("{\n" +
-//                    "  \"input\": {\n" +
-//                    "    \"text\": \"hi\"\n" +
-//                    "  },\n" +
-//                    "  \"context\": {\n" +
-//                    "    \"conversation_id\": \"bd3756f9-9846-47ce-8d54-7d163a2f4e16\",\n" +
-//                    "    \"system\": {\n" +
-//                    "      \"dialog_stack\": [\n" +
-//                    "        {\n" +
-//                    "          \"dialog_node\": \"root\"\n" +
-//                    "        }\n" +
-//                    "      ],\n" +
-//                    "      \"dialog_turn_counter\": 1,\n" +
-//                    "      \"dialog_request_counter\": 1,\n" +
-//                    "      \"_node_output_map\": {\n" +
-//                    "        \"Welcome\": [\n" +
-//                    "          0\n" +
-//                    "        ]\n" +
-//                    "      },\n" +
-//                    "      \"branch_exited\": true,\n" +
-//                    "      \"branch_exited_reason\": \"completed\"\n" +
-//                    "    }\n" +
-//                    "  }\n" +
-//                    "}");
-//            request.setBasicAuth("3c6cfc06-1558-4031-8ed6-ac13295edb39","rkulETlEJQk5");
+//            request.addBasicBody("{ \"input\":{ \"text\":\"" + params[0] + "\" } }");
+            request.addBasicBody(" {\n" +
+                    "                                                                      \"input\": {\n" +
+                    "                                                                        \"text\": \"" +  params[0] + "\"\n" +
+                    "                                                                      },\n" +
+                    "                                                                      \"context\": {\n" +
+                    "                                                                        \"conversation_id\": \"bd3756f9-9846-47ce-8d54-7d163a2f4e16\",\n" +
+                    "                                                                        \"system\": {\n" +
+                    "                                                                          \"dialog_stack\": [\n" +
+                    "                                                                            {\n" +
+                    "                                                                              \"dialog_node\": \"root\"\n" +
+                    "                                                                            }\n" +
+                    "                                                                          ],\n" +
+                    "                                                                          \"dialog_turn_counter\": 1,\n" +
+                    "                                                                          \"dialog_request_counter\": 1,\n" +
+                    "                                                                          \"_node_output_map\": {\n" +
+                    "                                                                            \"Welcome\": [\n" +
+                    "                                                                              0\n" +
+                    "                                                                            ]\n" +
+                    "                                                                          },\n" +
+                    "                                                                          \"branch_exited\": true,\n" +
+                    "                                                                          \"branch_exited_reason\": \"completed\"\n" +
+                    "                                                                        }\n" +
+                    "                                                                      }\n" +
+                    "                                                                    }");
             request.setBasicAuth("9a057f2f-c27b-47da-8979-861cd97eaff1","zv0WWXCWN7G0");
-
             request.addRequestHeader("Content-Type","application/json");
-
             request.connect();
 
-//            try {
-//                Log.i("CODE", String.valueOf(request.getConnection().getResponseCode()));
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            request.getConnection().
-//            request.getConnection().disconnect();
-//            request.getConnection().disconnect();
-
-//            String response = "";
-//            try {
-//                response = request.getResponse();
-//
-//
-//
-//
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
             WatsonResponse watsonResponse = null;
 
             try {
@@ -139,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
+            request.closeConnection();
 //            Log.i("RESPONSE", response);
 
             return watsonResponse;
@@ -147,9 +105,8 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(WatsonResponse result) {
-//            ((ConvoAdapter)(mRecyclerView.getAdapter())).updateAdapter(String.valueOf(result.getOutput().getText()));
-            ((ConvoAdapter)(mRecyclerView.getAdapter())).updateAdapter(arrayToString(result.getOutput().getText()));
-
+            ((ConvoAdapter)(mRecyclerView.getAdapter())).updateAdapter(new ConvoAdapter.DataWrapper(false, userInput));
+            ((ConvoAdapter)(mRecyclerView.getAdapter())).updateAdapter(new ConvoAdapter.DataWrapper(true, arrayToString(result.getOutput().getText())));
         }
 
         @Override
@@ -167,7 +124,6 @@ public class MainActivity extends AppCompatActivity {
             }
 
             return builder.toString();
-
         }
     }
 }
